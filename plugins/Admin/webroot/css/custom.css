@@ -1,0 +1,8 @@
+.strength_meter {
+    position: absolute;
+    right: -175px;
+    width: 160px;
+    top: 25px;
+}
+.password{position: relative; width: 80%}
+.form-signin .password{position: relative; width: 100%}

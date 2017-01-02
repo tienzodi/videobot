@@ -45,7 +45,7 @@ Router::defaultRouteClass('DashedRoute');
 Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/webhook',['controller'=>'Bot','action'=>'webhook']);
 	$routes->connect('/settingGreeting',['controller'=>'Bot','action'=>'settingGreeting']);
-	$routes->connect('/cronUpdateVideos',['controller'=>'YoutubeVideo','action'=>'cronUpdateVideos']);
+    $routes->connect('/cronUpdateVideos/*',['controller'=>'YoutubeVideo','action'=>'cronUpdateVideos']);
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file

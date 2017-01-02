@@ -254,21 +254,21 @@ if (Configure::read('debug')) {
 	Plugin::load('DebugKit', ['bootstrap' => true]);
 }
 
-Configure::write('environment', 'live');
+Configure::write('environment', 'test');
 
-ConnectionManager::config('default', [
-	'className' => 'Cake\Database\Connection',
-	'driver' => 'Cake\Database\Driver\Mysql',
-	'persistent' => false,
-	'host' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => 'database',
-	'encoding' => 'utf8',
-	'timezone' => 'UTC',
-	'cacheMetadata' => true,
-	'quoteIdentifiers' => false,
-]);
+//ConnectionManager::config('default', [
+//	'className' => 'Cake\Database\Connection',
+//	'driver' => 'Cake\Database\Driver\Mysql',
+//	'persistent' => false,
+//	'host' => 'localhost',
+//	'username' => 'root',
+//	'password' => '',
+//	'database' => 'videobot',
+//	'encoding' => 'utf8',
+//	'timezone' => 'UTC',
+//	'cacheMetadata' => true,
+//	'quoteIdentifiers' => false,
+//]);
 Email::configTransport('smtp', [
 	'className' => 'Smtp',
 	'host' => 'localhost',

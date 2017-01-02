@@ -50,7 +50,7 @@ class VideosController extends AppController
         );
 
         $YT_Category = Configure::read('YT_Category');
-        $this->set('YT_Category', $YT_Category);
+        $this->set('YT_Category', $YT_πCategory);
         $this->set('status', $status);
         $this->set('category', $category);
         $this->set('search', $search);

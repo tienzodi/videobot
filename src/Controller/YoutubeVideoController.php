@@ -6,6 +6,7 @@ use Cake\Log\Log;
 use Cake\Network\Http\Client;
 use Cake\Core\Configure;
 
+
 /**
  * YoutubeVideo Controller
  *
@@ -34,6 +35,9 @@ class YoutubeVideoController extends AppController
         //$params['videoDuration'] = 'medium';
         $params['relevanceLanguage'] = $content_language;
         $params['type'] = 'video';
+
+        $videos = [];
+
         foreach($this->CategoriesList as $category_id=>$categoryName)
         {
             $params['videoCategoryId'] = $category_id;
@@ -101,7 +105,7 @@ class YoutubeVideoController extends AppController
                         //pr($arr_response);exit;
                         $items = isset($arr_response['items']) ? $arr_response['items'] : array();
                         //pr($items);exit;
-                        foreach($items as $item){
+                            foreach($items as $item){
                             $id = $item['id'];
                             $category_yt_id = isset($item['snippet']['categoryId']) ? $item['snippet']['categoryId'] : '';
                             $duration = $item['contentDetails']['duration'];
@@ -117,6 +121,16 @@ class YoutubeVideoController extends AppController
                                 //$temp_video_title = $video_data[$id]['video_title'] ;
                                 //$video_data[$id]['video_title'] = utf8_encode($video_data[$id]['video_title']);
                                 $video = $this->Videos->patchEntity($video, $video_data[$id]);
+
+                                $videoInformation = new \stdClass();
+                                $videoInformation->youtube_id = $video->youtube_id;
+                                $videoInformation->category_name = $video->category_name;
+                                $videoInformation->video_title = $video->video_title;
+                                $videoInformation->video_thumb = $video->video_thumb;
+                                $videoInformation->video_published_at = $video->video_published_at;
+                                $videoInformation->video_channel_id = $video->video_channel_id;
+                                $videos[] = $videoInformation;
+
                                 if($this->Videos->save($video)){
                                     echo ' &nbsp; (['.$video->video_id.'])';
                                     //$video->video_title = $temp_video_title;
@@ -134,7 +148,25 @@ class YoutubeVideoController extends AppController
             }
             echo '<br>******************* End ************************** <br><br>';
         }
+
+        $this->sendVideosToFaqServer($videos);
         exit();
+    }
+
+    private function sendVideosToFaqServer($videos = []) {
+        $faqServerUrl = Configure::read('FaqBotService');
+        
+        $http = new Client();
+        $request = array(
+            'header' => array('Content-Type' => 'application/json')
+        );
+
+        $data = array(
+            "api_key" => "API KEY",
+            "videos" => $videos,
+        );
+
+         $http->post($faqServerUrl, $data, $request);
     }
 
     function convertDuration($duration = null){

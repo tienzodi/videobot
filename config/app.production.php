@@ -340,4 +340,6 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+
+    'FaqBotService' => 'https://timo-clone-staging1.herokuapp.com/video/update-video',
 ];

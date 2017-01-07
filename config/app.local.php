@@ -340,4 +340,6 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+
+    'FaqBotService' => 'http://localhost:5000/video/update-video',
 ];

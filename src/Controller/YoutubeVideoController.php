@@ -156,13 +156,14 @@ class YoutubeVideoController extends AppController
 
     private function sendVideosToFaqServer($videos = []) {
         $faqServerUrl = Configure::read('FaqBotService');
+        $token = Configure::read('FaqBotServiceToken');
         $http = new Client();
         $request = array(
             'header' => array('Content-Type' => 'application/json')
         );
 
         $data = array(
-            "api_key" => "API KEY",
+            "api_key" => $token,
             "videos" => $videos,
         );
 

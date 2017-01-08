@@ -342,4 +342,5 @@ return [
     ],
 
     'FaqBotService' => 'https://timo-clone-staging1.herokuapp.com/video/update-video',
+    'FaqBotServiceToken' => '47b7d4f26902f4660c09fad1e40319d5',
 ];

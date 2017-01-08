@@ -127,6 +127,7 @@ class YoutubeVideoController extends AppController
                                 $videoInformation->category_name = $video->category_name;
                                 $videoInformation->video_title = $video->video_title;
                                 $videoInformation->video_thumb = $video->video_thumb;
+                                $videoInformation->video_length = $video->video_length;
                                 $videoInformation->video_published_at = $video->video_published_at;
                                 $videoInformation->video_channel_id = $video->video_channel_id;
                                 $videos[] = $videoInformation;
@@ -155,7 +156,6 @@ class YoutubeVideoController extends AppController
 
     private function sendVideosToFaqServer($videos = []) {
         $faqServerUrl = Configure::read('FaqBotService');
-        
         $http = new Client();
         $request = array(
             'header' => array('Content-Type' => 'application/json')

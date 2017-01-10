@@ -158,16 +158,15 @@ class YoutubeVideoController extends AppController
         $faqServerUrl = Configure::read('FaqBotService');
         $token = Configure::read('FaqBotServiceToken');
         $http = new Client();
-        $request = array(
-            'header' => array('Content-Type' => 'application/json')
-        );
 
         $data = array(
             "api_key" => $token,
             "videos" => $videos,
         );
 
-         $http->post($faqServerUrl, $data, $request);
+         $response = $http->post($faqServerUrl, json_encode($data), ['type' => 'json']);
+
+        echo 'push to bot server: '. $response->body();
     }
 
     function convertDuration($duration = null){

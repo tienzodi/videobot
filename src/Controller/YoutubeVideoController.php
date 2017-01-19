@@ -150,18 +150,38 @@ class YoutubeVideoController extends AppController
             echo '<br>******************* End ************************** <br><br>';
         }
 
-        $this->sendVideosToFaqServer($videos);
+        $this->sendVideosToFaqServer();
         exit();
     }
 
-    private function sendVideosToFaqServer($videos = []) {
+    private function sendVideosToFaqServer() {
         $faqServerUrl = Configure::read('FaqBotService');
         $token = Configure::read('FaqBotServiceToken');
         $http = new Client();
+        $approvedVideos = [];
+
+        $this->loadModel('Videos');
+        $options = array(
+            'conditions' => array(
+                'status ' => 1
+            )
+        );
+        $videos = $this->Videos->find('all', $options)->toArray();
+        foreach ($videos as $video) {
+            $videoInformation = new \stdClass();
+            $videoInformation->youtube_id = $video->youtube_id;
+            $videoInformation->category_name = $video->category_name;
+            $videoInformation->video_title = $video->video_title;
+            $videoInformation->video_thumb = $video->video_thumb;
+            $videoInformation->video_length = $video->video_length;
+            $videoInformation->video_published_at = $video->video_published_at;
+            $videoInformation->video_channel_id = $video->video_channel_id;
+            $approvedVideos[] = $videoInformation;
+        }
 
         $data = array(
             "api_key" => $token,
-            "videos" => $videos,
+            "videos" => $approvedVideos
         );
 
          $response = $http->post($faqServerUrl, json_encode($data), ['type' => 'json']);

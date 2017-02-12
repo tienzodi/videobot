@@ -157,7 +157,8 @@ class YoutubeVideoController extends AppController
         $options = array(
             'conditions' => array(
                 'status ' => 1
-            )
+            ),
+	        'limit' => 100
         );
         $videos = $this->Videos->find('all', $options)->toArray();
         foreach ($videos as $video) {

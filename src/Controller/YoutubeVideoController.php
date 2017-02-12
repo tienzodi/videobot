@@ -22,21 +22,24 @@ class YoutubeVideoController extends AppController
         //$this->CategoriesList =  array('1'=>'Film & Animation');
     }
 
-    public function cronUpdateVideos($language){
+    public function cronUpdateVideos($language, $query){
         $content_language = !empty($language) && $language == 'vi' ? 'vi' : 'en';
-        echo 'Search Language : '.$content_language;
+        echo 'Search Language : '.$content_language .'</br>';
+	    echo 'Search query: '.$query .'</br>';
         //exit();
         $this->loadModel('Videos');
         $http = new Client();
         $params = ['key'=>$this->APIKEY] ;
+	    if(!empty($query)) {
+		    $params['q'] = 'valentine';
+	    }
         $params['part'] = 'snippet';
-        $params['order'] = 'date';
+        $params['order'] = 'viewCount';
         $params['maxResults'] = '10';
         //$params['videoDuration'] = 'medium';
         $params['relevanceLanguage'] = $content_language;
+        $params['regionCode'] = $content_language == 'vi' ? 'VN' : 'US';
         $params['type'] = 'video';
-
-        $videos = [];
 
         foreach($this->CategoriesList as $category_id=>$categoryName)
         {
@@ -49,13 +52,13 @@ class YoutubeVideoController extends AppController
                 $first_video = $video->first();
                 $after_video_published_at = $first_video->video_published_at->format('Y-m-d H:i:s');
                 $after_video_published_at = date(\DateTime::RFC3339, strtotime($after_video_published_at)); // 'Y-m-d\TH:i:sP'
-                $params['publishedAfter'] = $after_video_published_at;
+                //$params['publishedAfter'] = $after_video_published_at;
                 //$params['publishedBefore'] = $video_published_at;
             }
             else //from default
             {
                 $after_video_published_at = date(\DateTime::RFC3339, strtotime('2016-08-02')); // 'Y-m-d\TH:i:sP'
-                $params['publishedAfter'] = $after_video_published_at;
+               // $params['publishedAfter'] = $after_video_published_at;
             }
             echo '<br>******************* Start fetch : '.$categoryName.' ******************* <br>'.'video_published_at : '.$after_video_published_at.'<br>';
 
@@ -122,16 +125,6 @@ class YoutubeVideoController extends AppController
                                 //$video_data[$id]['video_title'] = utf8_encode($video_data[$id]['video_title']);
                                 $video = $this->Videos->patchEntity($video, $video_data[$id]);
 
-                                $videoInformation = new \stdClass();
-                                $videoInformation->youtube_id = $video->youtube_id;
-                                $videoInformation->category_name = $video->category_name;
-                                $videoInformation->video_title = $video->video_title;
-                                $videoInformation->video_thumb = $video->video_thumb;
-                                $videoInformation->video_length = $video->video_length;
-                                $videoInformation->video_published_at = $video->video_published_at;
-                                $videoInformation->video_channel_id = $video->video_channel_id;
-                                $videos[] = $videoInformation;
-
                                 if($this->Videos->save($video)){
                                     echo ' &nbsp; (['.$video->video_id.'])';
                                     //$video->video_title = $temp_video_title;
@@ -170,6 +163,7 @@ class YoutubeVideoController extends AppController
         foreach ($videos as $video) {
             $videoInformation = new \stdClass();
             $videoInformation->youtube_id = $video->youtube_id;
+            $videoInformation->category_id = $video->category_yt_id;
             $videoInformation->category_name = $video->category_name;
             $videoInformation->video_title = $video->video_title;
             $videoInformation->video_thumb = $video->video_thumb;

@@ -282,5 +282,22 @@ Configure::write('ga_account', array(
 	'fr' => 'UA-35390446-3',
 	'nl' => 'UA-35390446-3'
 ));
-$array_YT_Category = array('1'=>'Film & Animation','22'=>'People & Blogs','27'=>'Education','10'=>'Music','23'=>'Comedy','28'=>'Science & Technology','15'=>'Pets & Animals','24'=>'Entertainment','17'=>'Sports','26'=>'Howto & Style');
+
+$array_YT_Category = array(
+	'1'=>'Film & Animation',
+	'2'=>'Cars & Vehicles',
+	'10'=>'Music',
+	'15'=>'Pets & Animals',
+	'17'=>'Sports',
+	'19'=>'Travel & Events',
+	'20'=>'Gaming',
+	'22'=>'People & Blogs',
+	'23'=>'Comedy',
+	'24'=>'Entertainment',
+	'26'=>'Howto & Style',
+	'27'=>'Education',
+	'28'=>'Science & Technology',
+	'29'=>'Non-profits & Activism'
+);
+
 Configure::write('YT_Category', $array_YT_Category);

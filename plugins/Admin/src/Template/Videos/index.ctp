@@ -42,6 +42,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('video_title', 'Video') ?></th>
                     <th><?= $this->Paginator->sort('category_name') ?></th>
+                    <th>Thumbnail</th>
                     <th><?= $this->Paginator->sort('video_published','Published at') ?></th>
                     <th><?= $this->Paginator->sort('video_length','Length') ?></th>
                     <th><?= $this->Paginator->sort('total_suggest') ?></th>
@@ -65,8 +66,9 @@
                             ?>
                         </td>
                         <td><?= h($video->category_name) ?></td>
+                        <td><img width=100 src="<?php echo $video->video_thumb; ?>" /></td>
                         <td><?= $video->video_published_at ?></td>
-                        <td><? 
+                        <td><?php
 								$t = $video->video_length;
 								echo date('H:i:s', mktime(0, 0,$t));
 								
